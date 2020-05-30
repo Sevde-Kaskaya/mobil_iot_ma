@@ -24,4 +24,6 @@ export class AppPage implements OnInit {
   login() {
     this.navCtrl.navigateForward('/login');
   }
+
+  //github test
 }
