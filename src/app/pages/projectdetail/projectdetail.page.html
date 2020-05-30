@@ -1,0 +1,30 @@
+<ion-content fullscreen="true">
+  <ion-header collapse="condense">
+    <ion-button fill="clear" size="large" (click)="cancel()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" size="large" (click)="logOut()">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+    <ion-title color="light">Project Detail</ion-title>
+  </ion-header>
+
+  <ion-content padding center text-center> 
+    <ion-list>
+      <ion-item no-lines no-lines color="#0000" color="dark" *ngFor="let device of devices">
+        <ion-card *ngIf = "sensor">
+          <ion-card-header>
+            <ion-card-title  color="light"> <ion-label color="medium"  *ngFor="let data of datas">{{data.value}}</ion-label></ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            device id:  {{device.id}}, name: {{device.name}}
+          </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf = "controller">
+          <ion-card-content>
+            {{device.name}}
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+  </ion-list>
+  </ion-content>
