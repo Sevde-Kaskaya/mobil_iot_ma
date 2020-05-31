@@ -2,10 +2,21 @@
   <ion-button fill="clear" size="large" (click)="cancel()">
     <ion-icon name="arrow-back-outline"></ion-icon>
   </ion-button>
-  <ion-title color="light">{{app_name}}</ion-title>
+  <ion-title color="light">{{my_app.name}}</ion-title>
 </ion-header>
 
 <ion-content>
+
+  
+
+  
+    <ion-slides [options]="sliderConfig">
+      
+      <ion-slide *ngFor="let app_project of app_projects" >
+         <ion-label color="medium">{{app_project.id}}</ion-label>
+      </ion-slide>
+    </ion-slides>
+
     <ion-slides [options]="sliderConfig">
       
       <ion-slide *ngFor="let project of projects" >

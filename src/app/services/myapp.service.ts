@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { tap, retry, catchError } from 'rxjs/operators'
 import { Myapp } from './../models/myapp'
 import { Project } from '../models/project';
-//import { Myappprojects } from '../models/myappprojects';
+import { Appprojects } from 'src/app/models/appprojects';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,8 +12,9 @@ export class MyappService {
 
   constructor(private http: HttpClient) { }
 
-  path = "http://localhost:3000/app";
+  app_path = "http://localhost:3000/app";
   app_projects_PATH = "http://localhost:3000/app_projects";
+  project_path = "http://localhost:3000/projects";
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -22,47 +23,52 @@ export class MyappService {
 
   getApps(user_id): Observable<Myapp[]> {
     return this.http
-      .get<Myapp[]>(this.path + "?user_id=" + user_id)
+      .get<Myapp[]>(this.app_path + "?user_id=" + user_id)
       .pipe(
-        tap(data => console.log(JSON.stringify)),
         catchError(this.handleError)
       )
   }
 
-  getApp(app_id): Observable<Myapp> {
+  async getApp(app_id){
     return this.http
-      .get<Myapp>(this.path + "?id=" + app_id)
+      .get<Myapp>(this.app_path + "?id=" + app_id)
       .pipe(
-        tap(data => console.log(JSON.stringify)),
         catchError(this.handleError)
-      )
+      ).toPromise()
   }
 
-  /* getAppProjects(app_id): Observable<Myappprojects> {
-     return this.http
-       .get<Myappprojects>(this.app_projects_PATH + "?app_id=" + app_id)
-       .pipe(
-         tap(data => console.log(JSON.stringify)),
-         catchError(this.handleError)
-       )
-   }*/
-
-  createApp(myapp): Observable<Myapp> {
+  async getAppProjects(app_id){
     return this.http
-      .post<Myapp>(this.path, JSON.stringify(myapp), this.httpOptions)
+      .get<Appprojects[]>(this.app_projects_PATH + "?app_id=" + app_id)
+      .pipe(
+        catchError(this.handleError)
+      ).toPromise()
+  }
+
+  async createApp(myapp){
+    return this.http
+      .post<Myapp>(this.app_path, JSON.stringify(myapp), this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError)
-      )
+      ).toPromise();
   }
 
-  createAppProjects(myapp): Observable<Myapp> {
+  async createAppProjects(appprojects){
     return this.http
-      .post<Myapp>(this.app_projects_PATH, JSON.stringify(myapp), this.httpOptions)
+      .post<Appprojects>(this.app_projects_PATH, JSON.stringify(appprojects), this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError)
-      )
+      ).toPromise();
+  }
+
+  async getProject(project_id){
+    return this.http
+    .get<Project>(this.project_path + "?id="+ project_id) 
+    .pipe(
+      catchError(this.handleError)
+    ).toPromise();
   }
 
   handleError(err: HttpErrorResponse) {

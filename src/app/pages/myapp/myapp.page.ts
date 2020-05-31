@@ -26,17 +26,16 @@ export class MyappPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log("oninit" + this.user_id);
     this.appLoad();
   }
 
   appLoad() {
     //console.log(this.user_id)
     this.MyappService.getApps(this.user_id).subscribe((data) => {
-      console.log(data);
+     // console.log(data);
       this.app = data;
     })
-    console.log(this.app);
+    //console.log(this.app);
   }
 
   goAppDetail(app_id) {
