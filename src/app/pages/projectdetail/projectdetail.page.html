@@ -11,18 +11,18 @@
 
   <ion-content padding center text-center> 
     <ion-list>
-      <ion-item no-lines no-lines color="#0000" color="dark" *ngFor="let device of devices">
+      <ion-item no-lines no-lines color="#0000" color="dark" *ngFor="let device_id of device_array">
         <ion-card *ngIf = "sensor">
           <ion-card-header>
             <ion-card-title  color="light"> <ion-label color="medium"  *ngFor="let data of datas">{{data.value}}</ion-label></ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            device id:  {{device.id}}, name: {{device.name}}
+            device id:  {{device_id}}
           </ion-card-content>
         </ion-card>
         <ion-card *ngIf = "controller">
           <ion-card-content>
-            {{device.name}}
+            {{device_id}} 
           </ion-card-content>
         </ion-card>
       </ion-item>

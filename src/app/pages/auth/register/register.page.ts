@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, MenuController } from '@ionic/angular';
 import { AlertService } from 'src/app/services/alert.service';
 import { AccountService } from 'src/app/services/account.service';
 import { User } from 'src/app/models/user';
@@ -16,13 +16,14 @@ export class RegisterPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private alertService: AlertService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private menuCtrl: MenuController
   ) {
     this.user = new User();
   }
 
   ngOnInit() {
-
+    this.menuCtrl.enable(false);
   }
 
   create() {

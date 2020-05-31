@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { User } from './../../../models/user'
 import { AccountService } from 'src/app/services/account.service';
-import { NavController } from '@ionic/angular';
+import { NavController, MenuController } from '@ionic/angular';
 import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
@@ -20,12 +20,16 @@ export class LoginPage implements OnInit {
     private accountService: AccountService,
     private navCtrl: NavController,
     private alertService: AlertService,
-    private router: Router
+    private router: Router,
+    private menuCtrl: MenuController
   ) {
     this.user = new User();
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.menuCtrl.enable(false);
+
+  }
 
   login(user) {
     this.accountService.getUser(this.user).subscribe(data => {
