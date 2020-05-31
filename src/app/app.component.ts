@@ -4,8 +4,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DeviceService } from './services/device.service';
 import { Device } from './models/device';
-import { Router, NavigationEnd, NavigationExtras } from '@angular/router';
-import { TransferService } from './services/transfer.service';
+import { Router, NavigationExtras } from '@angular/router';
 import { ProjectdetailPage } from './pages/projectdetail/projectdetail.page';
 
 @Component({
@@ -28,8 +27,7 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private deviceService: DeviceService,
-    private router: Router,
-    private transferService: TransferService
+    private router: Router
   ) {
     this.initializeApp();
 
@@ -53,25 +51,10 @@ export class AppComponent implements OnInit {
     })
   }
 
-  /*
-  public selectedDevice(device_id) {
-    this.transferService.setId(device_id);
-    let current_url = this.router.url
-    if (current_url.length < 18) {
-      let url = current_url + '/' + device_id;
-      this.router.navigateByUrl(url);
-    }
-    else {
-      let url = current_url + '&' + device_id;
-      this.router.navigateByUrl(url);
-    }
-  }*/
-
   selectedDevice(device_id) {
-    this.addList(device_id)
-    let current_url = this.router.url
     const queryParams: any = {};
     const device_array = this.deviceList
+    this.addList(device_id)
     console.log("app  page - array: " + device_array)
     queryParams.device = JSON.stringify(device_array);
     const navigationExtras: NavigationExtras = {
@@ -89,23 +72,6 @@ export class AppComponent implements OnInit {
       return this.deviceList
     }
   }
-
-  //this.router.navigateByUrl(url, navigationExtras);
-
-  /* this.transferService.setId(device_id);
-   let current_url = this.router.url 
-   if(current_url.length < 18){
-     let url = current_url + '/' +device_id;
-     this.router.navigateByUrl(url);
-   }
-   else{
-     let url = current_url + '&' +device_id;
-     this.router.navigateByUrl(url);
-   }
-
- }*/
-
-
 
 }
 

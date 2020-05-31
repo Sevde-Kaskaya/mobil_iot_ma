@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-app',
@@ -10,11 +10,13 @@ export class AppPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
+    private menuCtrl: MenuController
   ) {
 
   }
 
   ngOnInit() {
+    this.menuCtrl.enable(false);
   }
 
   register() {

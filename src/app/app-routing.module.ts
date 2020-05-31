@@ -15,7 +15,11 @@ const routes: Routes = [
   { path: 'register', loadChildren: () => import('./pages/auth/register/register.module').then(m => m.RegisterPageModule) },
   { path: 'app', loadChildren: () => import('./pages/app/app.module').then(m => m.AppPageModule) },
   { path: 'newproject', loadChildren: () => import('./pages/newproject/newproject.module').then(m => m.NewprojectPageModule) },
-  { path: 'projectdetail',
+  { path: 'projectdetail',loadChildren: () => import('./pages/projectdetail/projectdetail.module').then(m => m.ProjectdetailPageModule) },
+  { 
+    path: 'projectdetail/:dev_id',
+    resolve:
+      { device: ResolverService },
     loadChildren: () => import('./pages/projectdetail/projectdetail.module').then(m => m.ProjectdetailPageModule)
   },
   { path: 'createapp', loadChildren: () => import('./pages/createapp/createapp.module').then(m => m.CreateappPageModule) },
@@ -25,12 +29,7 @@ const routes: Routes = [
     resolve:
       { app: ResolverService },
     loadChildren: () => import('./pages/myappdetails/myappdetails.module').then(m => m.MyappdetailsPageModule)
-  },
-  { path: 'projectdetail/:dev_id',
-  resolve:
-  { device: ResolverService },
-    loadChildren: () => import('./pages/projectdetail/projectdetail.module').then(m => m.ProjectdetailPageModule)
-  },
+  }
   
 ];
 
