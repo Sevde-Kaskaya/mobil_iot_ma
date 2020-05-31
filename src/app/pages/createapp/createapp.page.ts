@@ -5,6 +5,7 @@ import { Myapp } from '../../models/myapp';
 import { ProjectService } from 'src/app/services/project.service';
 import { Project } from 'src/app/models/project';
 import { MyappService } from 'src/app/services/myapp.service';
+import { Appprojects } from 'src/app/models/appprojects';
 @Component({
   selector: 'app-createapp',
   templateUrl: './createapp.page.html',
@@ -16,7 +17,7 @@ export class CreateappPage implements OnInit {
   projects: Project[];
   user_id: number;
   app_id: number = 0;
-
+  app_projects: Appprojects[];
   selected_projects: Array<Project> = new Array<Project>();
 
   constructor(
@@ -54,31 +55,27 @@ export class CreateappPage implements OnInit {
     })
   }
 
-  createApp() {
-    if(this.selected_projects.length ==0)
+  async createApp() {
+    if (this.selected_projects.length == 0)
       return;
-    if(this.app.name == undefined)
+    if (this.app.name == undefined)
       return;
-    
-    this.app.user_id=this.user_id;
 
-    this.myappService.createApp(this.app).subscribe((response) => {
-      console.log(response);
-     /* this.app_id = response.id;
-      if(this.app_id!=0){
-        console.log("appid"+this.app_id)
-        for(let i=0;i<this.selected_projects.length;i++){
-          this.appProject.app_id=this.app_id;
-          this.appProject.project_id=this.selected_projects[i].id;
-          this.myappService.createAppProjects(this.appProject);
-        }
-      }
-      console.log("app olusturuldu")
-      this.alertService.presentToast("App Olusturuldu..");*/
-    })
-      console.log(this.selected_projects);
+    this.app.user_id = this.user_id;
+    let createdapp = await this.myappService.createApp(this.app);
+    if (createdapp == undefined || createdapp.id == undefined)
+      return;
+
+    let app_id = createdapp.id;
+    for (let i = 0; i < this.selected_projects.length; i++) {
+      let appProject = new Appprojects()
+      appProject.app_id = app_id
+      appProject.project_id = this.selected_projects[i].id
+      let createdproject = await this.myappService.createAppProjects(appProject);
+    }
+    this.alertService.presentToast("App created..");
+    this.navCtrl.navigateForward('/myapp');
   }
-
 
   cancel() {
     this.navCtrl.navigateForward('/myapp');

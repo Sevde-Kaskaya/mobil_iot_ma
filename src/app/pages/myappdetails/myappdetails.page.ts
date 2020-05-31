@@ -5,6 +5,7 @@ import { Project } from 'src/app/models/project';
 import { ActivatedRoute } from '@angular/router';
 import { Myapp } from 'src/app/models/myapp';
 import { MyappService } from 'src/app/services/myapp.service';
+import { Appprojects } from 'src/app/models/appprojects';
 
 @Component({
   selector: 'app-myappdetails',
@@ -17,10 +18,12 @@ export class MyappdetailsPage implements OnInit {
   my_app: Myapp;
   current_app: any;
   app_id: number;
-  app_name: string;
 
   projects: Project[];
   user_id: Number;
+  app_projects: Appprojects[];
+  projects1: Array<Project> = new Array<Project>()
+  app_name: string;
 
   constructor(private navCtrl: NavController,
     private projectService: ProjectService,
@@ -29,32 +32,55 @@ export class MyappdetailsPage implements OnInit {
 
     this.user_id = Number(localStorage.getItem("user_id"));
     this.my_app = new Myapp();
-    this.getApp();
+    this.app_id = this.route.snapshot.data['app'];
   }
 
   sliderConfig = {
   }
 
   ngOnInit() {
-    this.getProjects();
+      this.getApp();
+      this.getProjects();
   }
 
-  getProjects() {
-    this.projectService.getProject(this.user_id).subscribe((data) => {
-      this.projects = data;
-    })
+  
+  async getApp() {
+    this.my_app = await this.myAppService.getApp(this.app_id)
   }
 
-  getApp() {
-    this.app_id = this.route.snapshot.data['app'];
-    console.log("app_id:" + this.app_id)
-    this.current_app = this.app_id
-    this.myAppService.getApp(this.current_app).subscribe(data => {
-      this.my_app = data;
-      this.app_name = this.my_app.name
-      console.log(data)
-    })
+  async getProjects() {
+    this.app_projects = await this.myAppService.getAppProjects(this.app_id);
+    console.log(this.app_projects)
+    for (let i = 0; i < this.app_projects.length; i++) {
+      await this.myAppService.getProject(this.app_projects[i].project_id)
+        .then((result) => this.projects1.push(result))
+    }
+    console.log(this.projects1)
   }
+
+  /*
+  ionViewCanEnter() {
+    console.log("1")
+  }
+  ionViewDidLoad() {
+    console.log("2")
+  }
+  ionViewWillEnter() {
+    console.log("3")
+  }
+  ionViewDidEnter() {
+    console.log("4")
+  }
+  ionViewCanLeave() {
+    console.log("5")
+  }
+  ionViewWillLeave() {
+    console.log("6")
+  }
+  ionViewWillUnload() {
+    console.log("7")
+  }
+  */
 
   cancel() {
     this.navCtrl.navigateForward('/myapp');
